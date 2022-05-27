@@ -1,0 +1,225 @@
+#include "TXLib.h"
+#include <fstream>
+using namespace std;
+
+struct Form
+{
+string question;
+int right_answer;
+string answer1;
+string answer2;
+string answer3;
+
+};
+
+bool Click(int y)
+{
+return(txMouseButtons() ==1 &&
+txMouseX() > 600 &&
+txMouseX() < 1150 &&
+txMouseY() > y &&
+txMouseY() < y+50);
+}
+
+void DrawAnswer(int y, string text)
+{
+txSelectFont ("Comic Sans MS",55);
+txRectangle(600,y,1150,y+50);
+txDrawText(600,y,1150,y+50, text.c_str());
+}
+
+
+string getPart(int *pos2, string str)
+{
+int pos1 = *pos2 +1;
+*pos2 =str.find(",",pos1 +1);
+string part = str.substr(pos1, *pos2 - pos1);
+return part;
+}
+
+int main()
+{
+txCreateWindow (1920, 1080);
+
+txTextCursor (false);
+int n = 0;
+int n_q = n+1;
+int result = 0;
+
+Form form_question;
+
+Form form[100];
+
+string str;
+
+ifstream file("Вопрос ответ.txt");
+
+  string PAGE = "Меню";
+
+
+
+while(file.good())
+{
+getline(file, str);
+int pos2 = -1;
+form[n].question = getPart(&pos2, str);
+form[n].right_answer = atoi(getPart(&pos2, str).c_str());
+form[n].answer1 = getPart(&pos2, str);
+form[n].answer2 = getPart(&pos2, str);
+form[n].answer3 = getPart(&pos2, str);
+
+n++;
+}
+
+file.close();
+
+
+
+
+
+while(n_q <= n)
+{
+txBegin();
+txSetFillColor (TX_BLACK);
+txClear();
+
+
+
+txSetColor (TX_WHITE);
+txSetFillColor (TX_BLACK);
+
+form_question = form[n_q-1];
+
+txSelectFont ("Comic Sans MS",70);
+
+txBitBlt(txDC(), 0, 0, 1920, 1080, txLoadImage("Картинки/Artem/Fon.bmp"));
+txDrawText(0,185,1920,250,form_question.question.c_str());
+DrawAnswer(350, form_question.answer1);
+DrawAnswer(450, form_question.answer2);
+DrawAnswer(550, form_question.answer3);
+
+ string PAGE = "Меню";
+
+    while(true)
+    {
+     txClear();
+       if(PAGE=="Меню")
+        {
+            txBegin();
+            txSetColor(TX_WHITE);
+            txSetFillColor(TX_BLACK);
+
+            txRectangle (500,300,700,350);
+            txDrawText(500,300,700,350,"START");
+
+            if( txMouseX() >=500 &&
+                txMouseY() >=300 &&
+                txMouseX() <=700 &&
+                txMouseY() <=350 &&
+                txMouseButtons() == 1)
+            {
+                PAGE="Игра";
+            }
+
+
+            txRectangle (500,400,700,450);
+            txDrawText(500,400,700,450,"HELP");
+
+            if( txMouseX() >=500 &&
+                txMouseY() >=400 &&
+                txMouseX() <=700 &&
+                txMouseY() <=450 &&
+                txMouseButtons() == 1)
+            {
+                PAGE="HELP";
+            }
+
+            txRectangle (500,500,700,550);
+            txDrawText(500,500,700,550,"EXIT");
+
+            if( txMouseX() >=500 &&
+                txMouseY() >=500 &&
+                txMouseX() <=700 &&
+                txMouseY() <=550 &&
+                txMouseButtons() == 1)
+            {
+                return 0;
+            }
+
+            txEnd();
+
+        }
+         if(PAGE=="HELP")
+         {
+
+            txBegin();
+             if (GetAsyncKeyState (VK_ESCAPE))
+               {
+                    PAGE="Меню";
+               }
+
+    
+         }
+
+         if(PAGE=="Игра")
+         {
+         txBegin();
+
+           if (GetAsyncKeyState (VK_ESCAPE))
+           {
+                PAGE="Меню";
+           }
+
+
+
+
+
+
+
+//клик
+if(Click(350))
+{
+n_q++;
+if(form_question.right_answer == 1)
+{
+result++;
+}
+while(txMouseButtons() == 1) txSleep(50);
+}
+if(Click(450))
+{
+n_q++;
+if(form_question.right_answer == 2)
+{
+result++;
+}
+while(txMouseButtons() == 1) txSleep(50);
+}
+if(Click(550))
+{
+n_q++;
+if(form_question.right_answer == 3)
+{
+result++;
+}
+while(txMouseButtons() == 1) txSleep(50);
+}
+
+txSleep(100);
+txEnd();
+
+}
+txSetFillColor(TX_BLACK);
+txClear();
+txDrawText(50,50,750,100,"Результат");
+char stroka[10];
+sprintf(stroka, "%d", result);
+txDrawText(50,150,750,200,stroka);
+
+if(result < 2) txDrawText(50,250,750,350,"ТЫ лох");
+else txDrawText(50,250,750,350,"Ты Красавчег");
+
+
+}
+return 0;
+}

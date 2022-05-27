@@ -1,0 +1,58 @@
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: C:\С++\Козиков\Test1\bin\Debug\Test1.exe, файл: C:\С++\TX\TXLib.h, строка: 13687, функция: bool {anonymous}::TX::txBitBlt(HDC, double, double, double, double, HDC, double, double, unsigned int),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 171, Date: 2022-05-15 04:30:40 +0400], Instance: 0x005072FC (32-bit), Flags: CMdRe0, Thread: 0x1840 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004229E4 in C:\С++\Козиков\Test1\bin\Debug\Test1.exe: txBitBlt() at C:/С++/TX/TXLib.h (13687)
+
+# 1 0x0042D1A5 in C:\С++\Козиков\Test1\bin\Debug\Test1.exe: main() at C:/С++/Козиков/Test1/main.cpp (94):
+
+     92: txSelectFont ("Comic Sans MS",70);
+     93: 
+=>   94: txBitBlt(txDC(), 0, 0, 1920, 1080, txLoadImage("Картинки/Artem/Fon.bmp"));
+     95: txDrawText(0,185,1920,250,form_question.question.c_str());
+     96: DrawAnswer(350, form_question.answer1);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txBitBlt(HDC, double, double, double, double, HDC, double, double, unsigned int) at C:\С++\TX\TXLib.h (13687):
+
+  13685:     {
+  13686: $1  if (_TX_HDC_FAILED (destImage))   return false;
+=>13687: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  13688: 
+  13689: $   POINT size = txGetExtent (sourceImage);
+
+# 1 in int main() at C:\С++\Козиков\Test1\main.cpp (94):
+
+     92: txSelectFont ("Comic Sans MS",70);
+     93: 
+=>   94: txBitBlt(txDC(), 0, 0, 1920, 1080, txLoadImage("Картинки/Artem/Fon.bmp"));
+     95: txDrawText(0,185,1920,250,form_question.question.c_str());
+     96: DrawAnswer(350, form_question.answer1);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-05-15 04:30:40 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	C:\С++\TX\TXLib.h
+Compiled:	May 27 2022 18:09:15, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	May 27 2022 18:09:36
+
+Run file:	C:\С++\Козиков\Test1\bin\Debug\Test1.exe
+Directory:	C:\С++\Козиков\Test1
+
+--------------------------------------------------
